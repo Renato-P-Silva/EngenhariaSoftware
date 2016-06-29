@@ -87,5 +87,7 @@ grails.project.dependency.resolution = {
 		test ":cucumber:1.2.0"
 		test ":geb:0.12.2"
 		//test "org.grails.plugins:code-coverage:2.0.3-3"
+		//compile "org.grails.plugins:export:1.6"
+		compile "org.grails.plugins:excel-export:0.2.1"
     }
 }
