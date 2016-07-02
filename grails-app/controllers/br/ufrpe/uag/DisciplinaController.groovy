@@ -8,33 +8,27 @@ import pl.touk.excel.export.WebXlsxExporter
 
 @Transactional(readOnly = true)
 class DisciplinaController {
-
+	
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	
-	
 	def export(){
-		def headers = ['codigoDisciplina', 'nomeDisciplina', 'periodo', 'semestre', 'turma', 'cargaHoraria' ]
-		//def withProperties = ['codigoDisciplina.value', 'nomeDisciplina.value', 'periodo.value', 'semestre.value', 'turma.value', 'cargaHoraria.value' ]
-		
-		new WebXlsxExporter().with {
-			setResponseHeaders(response)
-			fillHeader(headers)
-			int i =2;
-			def list = Disciplina.list(params)
-			for (e in list){
-				fillRow([e.getCodigoDisciplina(), e.getNomeDisciplina(), e.getPeriodo(), e.getSemestre(), e.getTurma(), e.getCargaHoraria()], i)
-				i = i + 1
+		def headers = ['codigoDisciplina', 'nomeDisciplina', 'periodo', 'semestre', 'turma', 'cargaHoraria' ]				
+			new WebXlsxExporter().with {
+				setResponseHeaders(response)
+				fillHeader(headers)
+				int i =2;
+				def list = Disciplina.list(params)
+				for (e in list){
+					fillRow([e.getCodigoDisciplina(), e.getNomeDisciplina(), e.getPeriodo(), e.getSemestre(), e.getTurma(), e.getCargaHoraria()], i)
+					i = i + 1
+				}
+				save(response.outputStream)
 			}
-			//add(disciplina, withProperties)
-			save(response.outputStream)
-		}
 	}
-
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Disciplina.list(params), model:[disciplinaInstanceCount: Disciplina.count()]
-		
+        respond Disciplina.list(params), model:[disciplinaInstanceCount: Disciplina.count()]		
     }
 
     def show(Disciplina disciplinaInstance) {
